@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sürpriz v5 🌷✨</title>
+    <title>Sonsuz Ürək Dövrü 🌷✨</title>
     <style>
         * {
             margin: 0;
@@ -96,7 +96,7 @@
             pointer-events: none;
         }
 
-        /* Uçan və birləşən yazılar */
+        /* Uçan, Birləşən və Dağılan Yazılar */
         .floating-text {
             position: absolute;
             font-size: 13px;
@@ -104,52 +104,60 @@
             color: #ff2a5f;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             white-space: nowrap;
-            /* İlk mövqe olaraq ekranın kənarlarından başlayır */
-            top: var(--start-y);
-            left: var(--start-x);
             opacity: 0;
-            /* Ortaya gəlmə və sonra daimi titrəmə animasiyası (Donma olmaması üçün tək bədəndə) */
-            animation: gatherIn 3s ease-out forwards, heartFloat 3s ease-in-out infinite alternate;
-            animation-delay: 0s, 3s; 
+            /* Tək bir ana animasiya ilə gəlmə, döyünmə və dağılma mərhələləri */
+            animation: heartCycle 8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Mira Yazısının Stili (Bir az fərqli və görünən çəhrayı) */
+        /* 10 Ədəd Görünən Mira Yazısı */
         .secret-name {
             color: #e63946 !important;
-            font-size: 12px !important;
-            opacity: 0.65 !important; /* Rahat fərq edilsin deyə artırıldı */
+            font-size: 13px !important;
+            opacity: 0.75 !important; 
             font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8) !important;
         }
 
-        /* Kənarlardan mərkəzə (ürək koordinatına) yığılma animasiyası */
-        @keyframes gatherIn {
+        /* Sonsuz Dövrün Animasiya Məntiqi (Cəmi 8 saniyə çəkir) */
+        @keyframes heartCycle {
+            /* 0% - 35%: Hər tərəfdən gəlib tam ürək formasına yığılırlar */
             0% {
                 top: var(--start-y);
                 left: var(--start-x);
                 opacity: 0;
-                transform: scale(0.5);
+                transform: scale(0.3) rotate(0deg);
             }
             30% {
                 opacity: 1;
             }
-            100% {
+            35% {
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) rotate(var(--rand-rot));
             }
-        }
-
-        /* Ürək yarandıqdan sonra yazıların daimi ritmik hərəkəti */
-        @keyframes heartFloat {
-            0% {
-                transform: translate(0, 0) scale(1) rotate(var(--rand-rot));
-            }
+            /* 35% - 70%: Ortada ürək formasında qalıb zərifcə döyünürlər/titrəyirlər */
             50% {
-                transform: translate(var(--move-x), var(--move-y)) scale(1.05);
+                top: var(--target-y);
+                left: var(--target-x);
+                opacity: 1;
+                transform: translate(var(--move-x), var(--move-y)) scale(1.08) rotate(var(--rand-rot));
+            }
+            65% {
+                top: var(--target-y);
+                left: var(--target-x);
+                opacity: 1;
+                transform: translate(0, 0) scale(0.95) rotate(var(--rand-rot));
+            }
+            /* 70% - 100%: Ürək forması dağılır, yazılar fərqli tərəflərə uçaraq yox olur */
+            70% {
+                opacity: 1;
             }
             100% {
-                transform: translate(calc(var(--move-x) * -1), calc(var(--move-y) * -1)) scale(0.95);
+                top: var(--end-y);
+                left: var(--end-x);
+                opacity: 0;
+                transform: scale(1.3) rotate(calc(var(--rand-rot) * 3));
             }
         }
     </style>
@@ -175,7 +183,7 @@
         const loveScreen = document.getElementById('loveScreen');
         const heartContainer = document.getElementById('heartContainer');
 
-        // "Yox" qaçış mexanizmi
+        // "Yox" düyməsinin qaçması
         function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 140) - (window.innerWidth / 2 - 100);
             const y = Math.random() * (window.innerHeight - 90) - (window.innerHeight / 2 - 40);
@@ -184,37 +192,43 @@
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
-        // "Hə" basılanda
+        // "Hə" düyməsi basılanda sonsuz dövrü başladırıq
         yesBtn.addEventListener('click', () => {
             quizBox.style.display = 'none';
             loveScreen.style.display = 'block';
-            buildTextHeart();
+            
+            // İlk ürək dalğası dərhal başlayır
+            triggerHeartWave();
+            
+            // Hər 7.5 saniyədən bir yeni bir ürək dalğası yaranır (Köhnələr itənə yaxın yenisi gəlir)
+            setInterval(triggerHeartWave, 7500);
         });
 
-        // Riyazi olaraq Ürək Forması (Parametrik Ürək Düsturu)
+        // Riyazi Mükəmməl Ürək Formulu
         function getHeartPoint(t) {
-            // t: 0-dan 2*PI-yə qədər dəyişir
-            // Ölçünü tənzimləmək üçün x-i 16, y-i 13 ilə vurub genişləndiririk
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
             
-            // Konteyner mərkəzinə (300, 250) nisbətdə yerləşdirmə
+            // 600x600 ölçülü konteynerin tam mərkəzi nöqtələri
             return {
-                x: 300 + x * 12,
-                y: 260 - y * 12  // Ekran koordinatında Y aşağı doğru artdığı üçün çıxırıq
+                x: 300 + x * 13,
+                y: 260 - y * 13 
             };
         }
 
-        function buildTextHeart() {
-            const totalPoints = 90; // Donma olmasın deyə optimal yazı sayı
+        function triggerHeartWave() {
+            const totalPoints = 100; // Tam bir ürək forması üçün ideal say
             const pool = ["Mədinə", "🌷", "I love you", "❤️"];
             
-            // 10 ədəd Mira üçün təsadüfi indekslər seçirik
+            // Hər dalğada mütləq 10 dənə Mira olması üçün indekslərin seçilməsi
             const miraIndices = [];
             while(miraIndices.length < 10) {
                 let r = Math.floor(Math.random() * totalPoints);
                 if(!miraIndices.includes(r)) miraIndices.push(r);
             }
+
+            // Bu dalğaya aid elementləri yığmaq üçün müvəqqəti massiv
+            const currentWaveElements = [];
 
             for (let i = 0; i < totalPoints; i++) {
                 const angle = (i / totalPoints) * 2 * Math.PI;
@@ -223,7 +237,7 @@
                 const el = document.createElement('div');
                 el.classList.add('floating-text');
 
-                // Mətn təyini
+                // Adların təyini
                 if (miraIndices.includes(i)) {
                     el.innerText = "Mira";
                     el.classList.add('secret-name');
@@ -231,7 +245,7 @@
                     el.innerText = pool[Math.floor(Math.random() * pool.length)];
                 }
 
-                // Ekranın hər tərəfindən (kənarlardan) random başlama mövqeyi
+                // 1. BAŞLANĞIC: Ekranın kənarlarından gəlmə koordinatları
                 let startX, startY;
                 if (Math.random() > 0.5) {
                     startX = Math.random() > 0.5 ? "-150px" : (window.innerWidth + 150) + "px";
@@ -241,22 +255,35 @@
                     startY = Math.random() > 0.5 ? "-150px" : (window.innerHeight + 150) + "px";
                 }
 
-                // CSS dəyişənlərini ötürürük
+                // 3. SON: Ürək dağılandan sonra uçub gedəcəkləri fərqli random istiqamətlər
+                const endX = (Math.random() * window.innerWidth * 1.5 - window.innerWidth * 0.25) + "px";
+                const endY = (Math.random() * window.innerHeight * 1.5 - window.innerHeight * 0.25) + "px";
+
+                // CSS xüsusiyyətlərinin elementə vurulması
                 el.style.setProperty('--start-x', startX);
                 el.style.setProperty('--start-y', startY);
                 el.style.setProperty('--target-x', targetPos.x + 'px');
                 el.style.setProperty('--target-y', targetPos.y + 'px');
+                el.style.setProperty('--end-x', endX);
+                el.style.setProperty('--end-y', endY);
                 
-                // Ürək daxilindəki fərdi titrəmə hərəkətləri üçün random limitlər
-                el.style.setProperty('--move-x', (Math.random() * 16 - 8) + 'px');
-                el.style.setProperty('--move-y', (Math.random() * 16 - 8) + 'px');
-                el.style.setProperty('--rand-rot', (Math.random() * 20 - 10) + 'deg');
+                // Ürək daxilindəki fərdi ritmik titrəmələr üçün dinamik ölçülər
+                el.style.setProperty('--move-x', (Math.random() * 20 - 10) + 'px');
+                el.style.setProperty('--move-y', (Math.random() * 20 - 10) + 'px');
+                el.style.setProperty('--rand-rot', (Math.random() * 30 - 15) + 'deg');
                 
-                // İncə xaotik görünüş üçün animasiya müddətini bir az fərqləndiririk
-                el.style.animationDuration = `3s, ${2 + Math.random() * 2}s`;
+                // Elementlərin tam eyni anda yox, xəfif fərqlərlə yığılması üçün kiçik gecikmə effekti
+                el.style.animationDelay = (Math.random() * 0.4) + "s";
 
                 heartContainer.appendChild(el);
+                currentWaveElements.push(el);
             }
+
+            // Animasiya tam bitəndə (8 saniyə sonra) bu dalğanın bütün elementlərini DOM-dan silirik.
+            // Bu, brauzerin şişməsini və donmasını tamamilə əngəlləyir.
+            setTimeout(() => {
+                currentWaveElements.forEach(el => el.remove());
+            }, 8500);
         }
     </script>
 </body>
