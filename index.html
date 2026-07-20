@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mədinəyə özəl(: 🌷✨</title>
+    <title>Daimi Ürək Axını + Musiqi 🌷🎵</title>
     <style>
         * {
             margin: 0;
@@ -107,21 +107,19 @@
             opacity: 0;
             top: var(--target-y);
             left: var(--target-x);
-            /* Sonsuz dövr animasiyası: yaranır, titrəyir, itir və təkrar başlayır */
             animation: flowInAndOut var(--dur) ease-in-out infinite alternate;
             animation-delay: var(--delay);
         }
 
-        /* Gizli və Sayı Azaldılmış Mira Yazısı */
+        /* Mira Yazısının Stili (Görünürlüyü artırıldı) */
         .secret-name {
-            color: #ffb3bc !important; /* Fon rənginə çox yaxın çəhrayı */
-            font-size: 11px !important;
-            opacity: 0.28 !important; /* Görünməyi ciddi şəkildə azaldıldı */
+            color: #d90429 !important; /* Daha tünd, diqqət çəkən romantik qırmızı */
+            font-size: 13px !important;
+            opacity: 0.55 !important;  /* Görünmə dərəcəsi artırıldı, tam gizli deyil */
             font-weight: bold;
-            text-shadow: none !important;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7) !important;
         }
 
-        /* Yazıların ürək daxilində daimi axın animasiyası */
         @keyframes flowInAndOut {
             0% {
                 opacity: 0;
@@ -157,12 +155,18 @@
         <div class="heart-wrapper" id="heartContainer"></div>
     </div>
 
+    <!-- Musiqi elementi (Gizli saxlanılıb ki, pleyer görünüşü korlamasın) -->
+    <audio id="bgMusic" loop>
+        <source src="MAHNI_LINKI_BURA.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const quizBox = document.getElementById('quizBox');
         const loveScreen = document.getElementById('loveScreen');
         const heartContainer = document.getElementById('heartContainer');
+        const bgMusic = document.getElementById('bgMusic');
 
         // "Yox" düyməsinin qaçması
         function moveNoButton() {
@@ -173,10 +177,16 @@
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
-        // "Hə" düyməsi basılanda
+        // "Hə" düyməsi basılanda animasiya və musiqi başlayır
         yesBtn.addEventListener('click', () => {
             quizBox.style.display = 'none';
             loveScreen.style.display = 'block';
+            
+            // Musiqini səsləndiririk
+            bgMusic.play().catch(error => {
+                console.log("Musiqi səsləndirilə bilmədi, linki yoxlayın:", error);
+            });
+
             buildPermanentHeart();
         });
 
@@ -192,10 +202,9 @@
         }
 
         function buildPermanentHeart() {
-            const totalPoints = 110; // Ürəyin konturunu tam doldurmaq üçün optimal say
+            const totalPoints = 110; 
             const pool = ["Mədinə", "🌷", "I love you", "❤️"];
             
-            // Cəmi 3 ədəd Mira üçün təsadüfi nöqtələr seçirik
             const miraIndices = [];
             while(miraIndices.length < 3) {
                 let r = Math.floor(Math.random() * totalPoints);
@@ -209,26 +218,22 @@
                 const el = document.createElement('div');
                 el.classList.add('floating-text');
 
-                // Yazıların daxil edilməsi
                 if (miraIndices.includes(i)) {
                     el.innerText = "Mira";
                     el.classList.add('secret-name');
-                    el.style.setProperty('--max-op', '0.28'); // Mira üçün kiçik şəffaflıq
+                    el.style.setProperty('--max-op', '0.55'); // Mira üçün görünmə dərəcəsi
                 } else {
                     el.innerText = pool[Math.floor(Math.random() * pool.length)];
-                    el.style.setProperty('--max-op', (0.7 + Math.random() * 0.3)); // Digərləri üçün normal görünüş
+                    el.style.setProperty('--max-op', (0.7 + Math.random() * 0.3));
                 }
 
-                // CSS dəyişənləri (Koordinatlar birbaşa ürək üzərindədir, kənara dağılmır)
                 el.style.setProperty('--target-x', targetPos.x + 'px');
                 el.style.setProperty('--target-y', targetPos.y + 'px');
                 
-                // Ürək daxili incə hərəkət və xaotik gecikmələr
                 el.style.setProperty('--move-x', (Math.random() * 14 - 7) + 'px');
                 el.style.setProperty('--move-y', (Math.random() * 14 - 7) + 'px');
                 el.style.setProperty('--rand-rot', (Math.random() * 24 - 12) + 'deg');
                 
-                // Yazıların eyni anda yox, növbəli şəkildə yanıb-sönməsi (axın təsiri üçün)
                 el.style.setProperty('--delay', (Math.random() * 5) + 's');
                 el.style.setProperty('--dur', (4 + Math.random() * 3) + 's');
 
