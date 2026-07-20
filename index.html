@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌷🎵</title>
+    <title>Sənin Üçün 🌷✨</title>
     <style>
         * {
             margin: 0;
@@ -16,28 +16,39 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            /* Canlı və hərəkətli müasir gradient fon */
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #ffafbd, #ffc3a0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             user-select: none;
         }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* Sual Paneli */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(12px);
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.25);
             z-index: 10;
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.5s ease;
         }
 
         h2 {
             color: #ff4d6d;
             margin-bottom: 30px;
             font-size: 26px;
+            letter-spacing: 0.5px;
         }
 
         .buttons {
@@ -51,19 +62,23 @@
         }
 
         button {
-            padding: 12px 30px;
+            padding: 12px 35px;
             font-size: 18px;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.1s;
+            transition: transform 0.1s, box-shadow 0.2s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
             background: linear-gradient(45deg, #ff4d6d, #ff758f);
             color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.05);
         }
 
         #noBtn {
@@ -79,7 +94,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, #ffc3a0 0%, #ffafbd 100%);
             display: none;
             z-index: 5;
             overflow: hidden;
@@ -94,49 +108,49 @@
             height: 600px;
             transform: translate(-50%, -50%);
             pointer-events: none;
+            animation: pulseHeart 3s ease-in-out infinite alternate;
+            animation-delay: 3.5s; /* Birləşmə bitəndən sonra döyünməyə başlasın */
         }
 
-        /* Daimi Olaraq Öz Yerində Dövr Edən Yazılar */
+        @keyframes pulseHeart {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.06); }
+        }
+
+        /* Qıraqdan gəlib ürək yaradan yazılar */
         .floating-text {
             position: absolute;
             font-size: 13px;
             font-weight: 600;
             color: #ff2a5f;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             white-space: nowrap;
+            
+            /* Başlanğıc və bitiş JavaScript ilə təyin olunur */
+            top: var(--start-y);
+            left: var(--start-x);
             opacity: 0;
-            top: var(--target-y);
-            left: var(--target-x);
-            animation: flowInAndOut var(--dur) ease-in-out infinite alternate;
-            animation-delay: var(--delay);
+            transform: translate(0, 0) scale(0.3) rotate(var(--start-rot));
+            
+            /* Kənarlardan gəlib birləşmə animasiyası */
+            animation: gatherToHeart 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        /* Mira Yazısının Stili (Görünürlüyü artırıldı) */
-        .secret-name {
-            color: #d90429 !important; /* Daha tünd, diqqət çəkən romantik qırmızı */
-            font-size: 13px !important;
-            opacity: 0.55 !important;  /* Görünmə dərəcəsi artırıldı, tam gizli deyil */
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7) !important;
-        }
-
-        @keyframes flowInAndOut {
+        @keyframes gatherToHeart {
             0% {
+                top: var(--start-y);
+                left: var(--start-x);
                 opacity: 0;
-                transform: scale(0.7) rotate(0deg) translate(0, 0);
+                transform: scale(0.3) rotate(var(--start-rot));
             }
-            15% {
-                opacity: var(--max-op);
-            }
-            50% {
-                transform: scale(1.05) rotate(var(--rand-rot)) translate(var(--move-x), var(--move-y));
-            }
-            85% {
-                opacity: var(--max-op);
+            30% {
+                opacity: 1;
             }
             100% {
-                opacity: 0;
-                transform: scale(0.8) rotate(calc(var(--rand-rot) * -1)) translate(calc(var(--move-x) * -1), calc(var(--move-y) * -1));
+                top: var(--target-y);
+                left: var(--target-x);
+                opacity: var(--max-op);
+                transform: scale(1) rotate(var(--final-rot));
             }
         }
     </style>
@@ -155,12 +169,10 @@
         <div class="heart-wrapper" id="heartContainer"></div>
     </div>
 
-    <!-- Musiqi elementi (Gizli saxlanılıb ki, pleyer görünüşü korlamasın) -->
+    <!-- Musiqi elementi -->
     <audio id="bgMusic" loop preload="auto">
-    <source src="ssstik.io_1784557325154.mp3" type="audio/mpeg">
-</audio>
-
-
+        <source src="ssstik.io_1784557325154.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const noBtn = document.getElementById('noBtn');
@@ -179,39 +191,36 @@
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
-        // "Hə" düyməsi basılanda animasiya və musiqi başlayır
+        // "Hə" düyməsi basılanda effekt və musiqi işə düşür
         yesBtn.addEventListener('click', () => {
-            quizBox.style.display = 'none';
-            loveScreen.style.display = 'block';
+            quizBox.style.opacity = '0';
+            setTimeout(() => {
+                quizBox.style.display = 'none';
+                loveScreen.style.display = 'block';
+                buildPermanentHeart();
+            }, 400);
             
             // Musiqini səsləndiririk
             bgMusic.play().catch(error => {
-                console.log("Musiqi səsləndirilə bilmədi, linki yoxlayın:", error);
+                console.log("Musiqi çalınmadı, fayl adını mütləq yoxlayın:", error);
             });
-
-            buildPermanentHeart();
         });
 
-        // Riyazi Ürək Formulu
+        // Riyazi Ürək Koordinat Formulu
         function getHeartPoint(t) {
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
             
+            // 600x600 konteyner daxilində tam mərkəzləmə üçün hesablama
             return {
                 x: 300 + x * 13,
-                y: 260 - y * 13 
+                y: 270 - y * 13 
             };
         }
 
         function buildPermanentHeart() {
-            const totalPoints = 110; 
-            const pool = ["Mədinə", "🌷", "I love you", "❤️"];
-            
-            const miraIndices = [];
-            while(miraIndices.length < 3) {
-                let r = Math.floor(Math.random() * totalPoints);
-                if(!miraIndices.includes(r)) miraIndices.push(r);
-            }
+            const totalPoints = 130; // Daha sıx və dolğun bir ürək üçün sayı artırdım
+            const pool = ["Mədinə", "🌷", "I love you", "❤️", "Mədinə", "🌷"]; // Mədinə və tülpan faizi artırıldı
 
             for (let i = 0; i < totalPoints; i++) {
                 const angle = (i / totalPoints) * 2 * Math.PI;
@@ -219,25 +228,46 @@
 
                 const el = document.createElement('div');
                 el.classList.add('floating-text');
-
-                if (miraIndices.includes(i)) {
-                    el.innerText = "Mira";
-                    el.classList.add('secret-name');
-                    el.style.setProperty('--max-op', '0.55'); // Mira üçün görünmə dərəcəsi
-                } else {
-                    el.innerText = pool[Math.floor(Math.random() * pool.length)];
-                    el.style.setProperty('--max-op', (0.7 + Math.random() * 0.3));
+                
+                // Təsadüfi yazı seçimi
+                el.innerText = pool[Math.floor(Math.random() * pool.length)];
+                
+                if(el.innerText === "🌷") {
+                    el.style.fontSize = "16px";
                 }
 
+                // --- EKRANIN KƏNARLARINDAN BAŞLAMA MƏNTİQİ ---
+                // Elementlərin gələcəyi təsadüfi xarici koordinatları hesablayırıq
+                const side = Math.floor(Math.random() * 4); // 0: Yuxarı, 1: Sağ, 2: Aşağı, 3: Sol
+                let startX, startY;
+                const offset = 200; // Ekrandan tam kənarda yaranmaları üçün
+
+                if (side === 0) { // Yuxarıdan
+                    startX = Math.random() * window.innerWidth - (window.innerWidth / 2);
+                    startY = -offset;
+                } else if (side === 1) { // Sağdan
+                    startX = window.innerWidth / 2 + offset;
+                    startY = Math.random() * window.innerHeight - (window.innerHeight / 2);
+                } else if (side === 2) { // Aşağıdan
+                    startX = Math.random() * window.innerWidth - (window.innerWidth / 2);
+                    startY = window.innerHeight / 2 + offset;
+                } else { // Soldan
+                    startX = -window.innerWidth / 2 - offset;
+                    startY = Math.random() * window.innerHeight - (window.innerHeight / 2);
+                }
+
+                // Stil və animasiya dəyişənlərini CSS-ə ötürürük
+                el.style.setProperty('--start-x', startX + 'px');
+                el.style.setProperty('--start-y', startY + 'px');
                 el.style.setProperty('--target-x', targetPos.x + 'px');
                 el.style.setProperty('--target-y', targetPos.y + 'px');
                 
-                el.style.setProperty('--move-x', (Math.random() * 14 - 7) + 'px');
-                el.style.setProperty('--move-y', (Math.random() * 14 - 7) + 'px');
-                el.style.setProperty('--rand-rot', (Math.random() * 24 - 12) + 'deg');
+                // Fırlanma effektləri
+                el.style.setProperty('--start-rot', (Math.random() * 360) + 'deg');
+                el.style.setProperty('--final-rot', (Math.random() * 20 - 10) + 'deg');
                 
-                el.style.setProperty('--delay', (Math.random() * 5) + 's');
-                el.style.setProperty('--dur', (4 + Math.random() * 3) + 's');
+                // Şəffaflıq xüsusiyyəti
+                el.style.setProperty('--max-op', (0.75 + Math.random() * 0.25));
 
                 heartContainer.appendChild(el);
             }
