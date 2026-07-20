@@ -1,86 +1,125 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Special for Madina ❤️</title>
     <style>
-        body {
-            background-color: #000;
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: #05050a;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            perspective: 1000px;
+            perspective: 1200px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .container {
-            position: relative;
+        /* Arxa fonda dərinlik effekti yaratmaq üçün zəif qradiyent */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 77, 109, 0.08) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+        }
+
+        .scene {
             width: 0;
             height: 0;
             transform-style: preserve-3d;
-            animation: heart-rotate 12s infinite linear;
+            animation: rotateScene 16s infinite linear;
         }
 
-        .i_love_word {
+        .word-element {
+            position: absolute;
+            font-weight: 800;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Mədinə adının zərif çəhrayı və parıltılı üslubu */
+        .madina-style {
             color: #ffb3c6;
             font-size: 1.1rem;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            font-weight: bold;
-            position: absolute;
-            text-shadow: 0 0 8px rgba(255, 179, 198, 0.8);
-            white-space: nowrap;
-            transform-style: preserve-3d;
+            text-shadow: 0 0 10px rgba(255, 179, 198, 0.6), 0 0 20px rgba(255, 179, 198, 0.3);
         }
 
-        /* Mira adı fərqli parıldasın deyə xüsusi rəng (istəsəniz dəyişə bilərsiniz) */
-        .mira_style {
+        /* Mira adının daha diqqətçəkən, alovlu qırmızı üslubu */
+        .mira-style {
             color: #ff4d6d;
-            text-shadow: 0 0 12px rgba(255, 77, 109, 0.9);
+            font-size: 1.3rem;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.9), 0 0 30px rgba(255, 77, 109, 0.5);
+            z-index: 10;
         }
 
-        @keyframes heart-rotate {
-            0% { transform: rotateY(0deg) rotateX(10deg); }
-            100% { transform: rotateY(360deg) rotateX(10deg); }
+        /* Ürəyin 3D fəzada professional şəkildə fırlanması */
+        @keyframes rotateScene {
+            0% {
+                transform: rotateX(10deg) rotateY(0deg);
+            }
+            100% {
+                transform: rotateX(10deg) rotateY(360deg);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="heart"></div>
+    <div class="scene" id="heart-scene"></div>
 
     <script>
-        const heartContainer = document.getElementById('heart');
-        const totalWords = 200; // Ürəyin daha sıx və gözəl görünməsi üçün söz sayını artırdım
+        const scene = document.getElementById('heart-scene');
+        const totalElements = 220; // Strukturun daha dolğun görünməsi üçün say artırıldı
+        const scaleFactor = 18;    // Telefon ekranına tam uyğunlaşdırılmış miqyas
 
-        // "Mira" adlarının yerləşəcəyi təsadüfi yerlər (Məsələn, 50-ci və 150-ci sırada)
-        const miraPositions = [50, 150]; 
+        // Mira adlarının ürəyin ön və görünən hissələrində strateji yerləşdirilməsi
+        const miraIndices = [45, 110, 165]; 
 
-        for (let i = 0; i < totalWords; i++) {
-            const word = document.createElement('div');
-            word.className = 'i_love_word';
+        for (let i = 0; i < totalElements; i++) {
+            const el = document.createElement('div');
+            el.className = 'word-element';
 
-            // Əgər növbə pre-defined sıradadırsa "Mira", digər hallarda "Mədinə" yazılır
-            if (miraPositions.includes(i)) {
-                word.innerText = 'Mira';
-                word.classList.add('mira_style'); // İki adı vizual ayırmaq üçün effekt
+            // Ad seçimi
+            if (miraIndices.includes(i)) {
+                el.innerText = 'Mira';
+                el.classList.add('mira-style');
             } else {
-                word.innerText = 'Mədinə';
+                el.innerText = 'Mədinə';
+                el.classList.add('madina-style');
             }
 
-            // Riyazi 3D ürək trayektoriyasının hesablanması
-            const t = (i / totalWords) * 2 * Math.PI;
+            // Riyazi Parametrik Ürək Düsturu (3D Math Heart Curve)
+            const t = (i / totalElements) * 2 * Math.PI;
             
-            const x = 16 * Math.pow(Math.sin(t), 3);
-            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+            // X və Y koordinatları (Klassik ürək forması)
+            const x = 16 * Math.pow(Math.sin(t), 3) * scaleFactor;
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scaleFactor;
             
-            const zAngle = t * 180 / Math.PI;
-            const scale = 16; // Ölçünü telefonda tam ideal görünməsi üçün tənzimlədim
+            // Z koordinatı (Ürəyə 3D həcm və dolğunluq vermək üçün qabarıqlıq)
+            const z = Math.sin(t * 2) * 65; 
 
-            word.style.transform = `translate3d(${x * scale}px, ${y * scale}px, ${Math.sin(t) * 60}px) rotateY(${zAngle}deg)`;
-            heartContainer.appendChild(word);
+            // Professional Billboard Effekti:
+            // Fırlanma zamanı adların tərs görünməməsi üçün riyazi bucaq korreksiyası
+            const yRotation = -(t * 180 / Math.PI);
+
+            // Elementin 3D fəzada yerləşdirilməsi
+            el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${yRotation}deg)`;
+            
+            scene.appendChild(el);
         }
     </script>
 </body>
