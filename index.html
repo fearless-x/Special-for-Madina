@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for Madina ❤️</title>
+    <style>
+        body {
+            background-color: #000;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            position: relative;
+            width: 0;
+            height: 0;
+            transform-style: preserve-3d;
+            animation: heart-rotate 12s infinite linear;
+        }
+
+        .i_love_word {
+            color: #ffb3c6;
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-weight: bold;
+            position: absolute;
+            text-shadow: 0 0 8px rgba(255, 179, 198, 0.8);
+            white-space: nowrap;
+            transform-style: preserve-3d;
+        }
+
+        /* Mira adı fərqli parıldasın deyə xüsusi rəng (istəsəniz dəyişə bilərsiniz) */
+        .mira_style {
+            color: #ff4d6d;
+            text-shadow: 0 0 12px rgba(255, 77, 109, 0.9);
+        }
+
+        @keyframes heart-rotate {
+            0% { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="heart"></div>
+
+    <script>
+        const heartContainer = document.getElementById('heart');
+        const totalWords = 200; // Ürəyin daha sıx və gözəl görünməsi üçün söz sayını artırdım
+
+        // "Mira" adlarının yerləşəcəyi təsadüfi yerlər (Məsələn, 50-ci və 150-ci sırada)
+        const miraPositions = [50, 150]; 
+
+        for (let i = 0; i < totalWords; i++) {
+            const word = document.createElement('div');
+            word.className = 'i_love_word';
+
+            // Əgər növbə pre-defined sıradadırsa "Mira", digər hallarda "Mədinə" yazılır
+            if (miraPositions.includes(i)) {
+                word.innerText = 'Mira';
+                word.classList.add('mira_style'); // İki adı vizual ayırmaq üçün effekt
+            } else {
+                word.innerText = 'Mədinə';
+            }
+
+            // Riyazi 3D ürək trayektoriyasının hesablanması
+            const t = (i / totalWords) * 2 * Math.PI;
+            
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+            
+            const zAngle = t * 180 / Math.PI;
+            const scale = 16; // Ölçünü telefonda tam ideal görünməsi üçün tənzimlədim
+
+            word.style.transform = `translate3d(${x * scale}px, ${y * scale}px, ${Math.sin(t) * 60}px) rotateY(${zAngle}deg)`;
+            heartContainer.appendChild(word);
+        }
+    </script>
+</body>
+</html>
