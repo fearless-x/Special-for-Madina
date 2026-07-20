@@ -1,5 +1,5 @@
- <!DOCTYPE html>
-<html lang="az">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,31 +12,47 @@
         }
         
         body {
-            background-color: #05050a;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #06060c;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Playfair Display', 'Segoe UI', serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            perspective: 1200px;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            justify-content: flex-start;
         }
 
-        /* Arxa fonda dərinlik effekti yaratmaq üçün zəif qradiyent */
+        /* Ambient Background Glow */
         body::before {
             content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 77, 109, 0.08) 0%, rgba(0,0,0,0) 70%);
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 77, 109, 0.12) 0%, rgba(0,0,0,0) 70%);
             pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            perspective: 1200px;
+            transition: height 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2;
         }
 
         .scene {
             width: 0;
             height: 0;
             transform-style: preserve-3d;
-            animation: rotateScene 16s infinite linear;
+            animation: rotateScene 20s infinite linear;
+            transition: transform 1.5s ease;
         }
 
         .word-element {
@@ -44,21 +60,18 @@
             font-weight: 800;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             transform-style: preserve-3d;
             backface-visibility: visible;
             user-select: none;
-            transition: all 0.3s ease;
         }
 
-        /* Mədinə adının zərif çəhrayı və parıltılı üslubu */
         .madina-style {
             color: #ffb3c6;
             font-size: 1.1rem;
             text-shadow: 0 0 10px rgba(255, 179, 198, 0.6), 0 0 20px rgba(255, 179, 198, 0.3);
         }
 
-        /* Mira adının daha diqqətçəkən, alovlu qırmızı üslubu */
         .mira-style {
             color: #ff4d6d;
             font-size: 1.3rem;
@@ -66,60 +79,223 @@
             z-index: 10;
         }
 
-        /* Ürəyin 3D fəzada professional şəkildə fırlanması */
         @keyframes rotateScene {
-            0% {
-                transform: rotateX(10deg) rotateY(0deg);
-            }
-            100% {
-                transform: rotateX(10deg) rotateY(360deg);
-            }
+            0% { transform: rotateX(10deg) rotateY(0deg); }
+            100% { transform: rotateX(10deg) rotateY(360deg); }
+        }
+
+        /* CTA Button */
+        .explore-btn {
+            margin-top: 280px;
+            padding: 14px 32px;
+            background: transparent;
+            border: 2px solid #ff4d6d;
+            color: #ffb3c6;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .explore-btn:hover {
+            background: #ff4d6d;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* Content Section (Hidden Initially) */
+        .content-section {
+            max-width: 800px;
+            width: 90%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.5s ease;
+            padding-bottom: 100px;
+            z-index: 1;
+            display: none;
+        }
+
+        .love-letter {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 179, 198, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .love-letter h1 {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .love-letter p {
+            color: #e0e0e6;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Timeline Styling */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 30px;
+            border-left: 2px dashed rgba(255, 77, 109, 0.3);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: '❤️';
+            position: absolute;
+            left: -42px;
+            top: 2px;
+            background: #06060c;
+            font-size: 1rem;
+        }
+
+        .timeline-date {
+            color: #ff4d6d;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.01);
+            border-left: 3px solid #ffb3c6;
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .timeline-content p {
+            color: #a0a0aa;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* State Changes via JS */
+        .revealed .hero-section {
+            height: 45vh;
+        }
+        
+        .revealed .explore-btn {
+            display: none;
+        }
+
+        .revealed .content-section {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="scene" id="heart-scene"></div>
+    <div class="hero-section" id="hero">
+        <div class="scene" id="heart-scene"></div>
+        <button class="explore-btn" onclick="revealStory()">Open Our Story</button>
+    </div>
+
+    <div class="content-section" id="content">
+        <div class="love-letter">
+            <h1>To The Most Beautiful Soul</h1>
+            <p>"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</p>
+            <p>Madina, you came into my life like a beautiful dream, but having you by my side feels better than any reality. Every single day, your smile lights up my entire universe. This digital space is just a tiny reflection of how massive my love for you is.</p>
+            <p>You are my today, my tomorrow, and my forever. ❤️</p>
+        </div>
+
+        <!-- İnteraktiv Zaman Oxu - Buraları öz tarixləriniz və xatirələrinizlə dəyişə bilərsiniz -->
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">The Beginning</div>
+                <div class="timeline-content">
+                    <h3>The Day the Universe Aligned</h3>
+                    <p>The exact moment you stepped into my life and changed my world forever. The start of our beautiful journey.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Beautiful Memories</div>
+                <div class="timeline-content">
+                    <h3>Every Little Moment with You</h3>
+                    <p>From our endless midnight talks to the shared laughs, every second spent with you becomes a treasure I keep in my heart.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Forever & Always</div>
+                <div class="timeline-content">
+                    <h3>Into the Future</h3>
+                    <p>No matter where life takes us, my hand will always hold yours. Building a lifetime of happiness, together.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // 3D Ürəyin Qurulması
         const scene = document.getElementById('heart-scene');
-        const totalElements = 220; // Strukturun daha dolğun görünməsi üçün say artırıldı
-        const scaleFactor = 18;    // Telefon ekranına tam uyğunlaşdırılmış miqyas
-
-        // Mira adlarının ürəyin ön və görünən hissələrində strateji yerləşdirilməsi
-        const miraIndices = [45, 110, 165]; 
+        const totalElements = 220;
+        const scaleFactor = 16;
+        const miraIndices = [45, 110, 165]; // Gizli Mira adları
 
         for (let i = 0; i < totalElements; i++) {
             const el = document.createElement('div');
             el.className = 'word-element';
 
-            // Ad seçimi
             if (miraIndices.includes(i)) {
                 el.innerText = 'Mira';
                 el.classList.add('mira-style');
             } else {
-                el.innerText = 'Mədinə';
+                el.innerText = 'Madina';
                 el.classList.add('madina-style');
             }
 
-            // Riyazi Parametrik Ürək Düsturu (3D Math Heart Curve)
             const t = (i / totalElements) * 2 * Math.PI;
-            
-            // X və Y koordinatları (Klassik ürək forması)
             const x = 16 * Math.pow(Math.sin(t), 3) * scaleFactor;
             const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scaleFactor;
-            
-            // Z koordinatı (Ürəyə 3D həcm və dolğunluq vermək üçün qabarıqlıq)
-            const z = Math.sin(t * 2) * 65; 
-
-            // Professional Billboard Effekti:
-            // Fırlanma zamanı adların tərs görünməməsi üçün riyazi bucaq korreksiyası
+            const z = Math.sin(t * 2) * 60; 
             const yRotation = -(t * 180 / Math.PI);
 
-            // Elementin 3D fəzada yerləşdirilməsi
             el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${yRotation}deg)`;
-            
             scene.appendChild(el);
+        }
+
+        // Düyməyə basanda saytın interaktiv açılması
+        function revealStory() {
+            document.body.classList.add('revealed');
+            
+            // Ürəyin fırlanmasını bir az kiçildib yuxarıda estetik saxlamaq üçün
+            setTimeout(() => {
+                window.scrollTo({
+                    top: window.innerHeight * 0.4,
+                    behavior: 'smooth'
+                });
+            }, 300);
         }
     </script>
 </body>
