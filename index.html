@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sənin Üçün 🌷✨</title>
+    <!-- Gözəl və estetik əl yazısı şrifti (Google Fonts) -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,11 +18,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* Canlı və hərəkətli müasir gradient fon */
             background: linear-gradient(-45deg, #ff9a9e, #fecfef, #ffafbd, #ffc3a0);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
             user-select: none;
         }
@@ -34,21 +35,19 @@
         /* Sual Paneli */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             padding: 40px;
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(255, 77, 109, 0.25);
             z-index: 10;
             border: 2px solid rgba(255, 255, 255, 0.6);
-            transition: all 0.5s ease;
         }
 
         h2 {
             color: #ff4d6d;
             margin-bottom: 30px;
             font-size: 26px;
-            letter-spacing: 0.5px;
         }
 
         .buttons {
@@ -68,17 +67,13 @@
             border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.1s, box-shadow 0.2s;
+            transition: transform 0.1s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
             background: linear-gradient(45deg, #ff4d6d, #ff758f);
             color: white;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.05);
         }
 
         #noBtn {
@@ -108,49 +103,65 @@
             height: 600px;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            animation: pulseHeart 3s ease-in-out infinite alternate;
-            animation-delay: 3.5s; /* Birləşmə bitəndən sonra döyünməyə başlasın */
         }
 
-        @keyframes pulseHeart {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-50%, -50%) scale(1.06); }
-        }
-
-        /* Qıraqdan gəlib ürək yaradan yazılar */
-        .floating-text {
+        /* Elementlərin Ümumi Stili */
+        .floating-element {
             position: absolute;
-            font-size: 13px;
-            font-weight: 600;
-            color: #ff2a5f;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-            white-space: nowrap;
-            
-            /* Başlanğıc və bitiş JavaScript ilə təyin olunur */
-            top: var(--start-y);
-            left: var(--start-x);
+            pointer-events: none;
             opacity: 0;
-            transform: translate(0, 0) scale(0.3) rotate(var(--start-rot));
-            
-            /* Kənarlardan gəlib birləşmə animasiyası */
-            animation: gatherToHeart 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        @keyframes gatherToHeart {
+        /* Xüsusi Gözəl Yazı Şrifti */
+        .floating-text-style {
+            font-family: 'Caveat', cursive;
+            font-size: 24px; /* Şrift dəyişdiyi üçün ölçüsü böyüdüldü, çox gözəl qalın görünür */
+            font-weight: 700;
+            color: #d90429;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            white-space: nowrap;
+        }
+
+        /* Real Şəkillərin Stili */
+        .floating-img-style {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
+        }
+
+        /* Sonsuz Dövr Edən Giriş və Çıxış Animasiyası */
+        .animate-item {
+            animation: gatherAndCycle var(--dur) cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes gatherAndCycle {
             0% {
                 top: var(--start-y);
                 left: var(--start-x);
                 opacity: 0;
                 transform: scale(0.3) rotate(var(--start-rot));
             }
-            30% {
+            20% {
                 opacity: 1;
             }
-            100% {
+            /* Mərkəzdə birləşib ürəyi yaradırlar və bir az rəqs edirlər */
+            45%, 75% {
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: var(--max-op);
-                transform: scale(1) rotate(var(--final-rot));
+                transform: scale(1) rotate(var(--final-rot)) translate(var(--jitter-x), var(--jitter-y));
+            }
+            /* Yox olurlar ki, arxadan gələn yeniləri ilə əvəz olunsunlar */
+            100% {
+                top: var(--target-y);
+                left: var(--target-x);
+                opacity: 0;
+                transform: scale(0.7) rotate(calc(var(--final-rot) * 1.5));
             }
         }
     </style>
@@ -182,7 +193,10 @@
         const heartContainer = document.getElementById('heartContainer');
         const bgMusic = document.getElementById('bgMusic');
 
-        // "Yox" düyməsinin qaçması
+        // Real Şəkillərin Linkləri (Şəffaf PNG formatında premium vizuallar)
+        const realTulipImg = "https://i.imgur.com/vHq8S7g.png"; // Real Qırmızı/Çəhrayı Tülpan
+        const realHeartImg = "https://i.imgur.com/S8p3bY6.png"; // Real Parlaq Ürək
+
         function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 140) - (window.innerWidth / 2 - 100);
             const y = Math.random() * (window.innerHeight - 90) - (window.innerHeight / 2 - 40);
@@ -191,86 +205,104 @@
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
-        // "Hə" düyməsi basılanda effekt və musiqi işə düşür
         yesBtn.addEventListener('click', () => {
             quizBox.style.opacity = '0';
             setTimeout(() => {
                 quizBox.style.display = 'none';
                 loveScreen.style.display = 'block';
-                buildPermanentHeart();
+                
+                // Elementləri dalğalı və daimi olaraq yaratmağa başlayırıq
+                startInfiniteHeartCycle();
             }, 400);
             
-            // Musiqini səsləndiririk
-            bgMusic.play().catch(error => {
-                console.log("Musiqi çalınmadı, fayl adını mütləq yoxlayın:", error);
-            });
+            bgMusic.play().catch(e => console.log("Musiqi xətası:", e));
         });
 
         // Riyazi Ürək Koordinat Formulu
         function getHeartPoint(t) {
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-            
-            // 600x600 konteyner daxilində tam mərkəzləmə üçün hesablama
             return {
                 x: 300 + x * 13,
                 y: 270 - y * 13 
             };
         }
 
-        function buildPermanentHeart() {
-            const totalPoints = 130; // Daha sıx və dolğun bir ürək üçün sayı artırdım
-            const pool = ["Mədinə", "🌷", "I love you", "❤️", "Mədinə", "🌷"]; // Mədinə və tülpan faizi artırıldı
-
+        // Daimi dövriyyəni təmin edən idarəetmə funksiyası
+        function startInfiniteHeartCycle() {
+            const totalPoints = 120; // Ürəyi təşkil edən nöqtə sayı
+            
+            // Hər nöqtə üçün elementi yaradırıq
             for (let i = 0; i < totalPoints; i++) {
-                const angle = (i / totalPoints) * 2 * Math.PI;
-                const targetPos = getHeartPoint(angle);
-
-                const el = document.createElement('div');
-                el.classList.add('floating-text');
-                
-                // Təsadüfi yazı seçimi
-                el.innerText = pool[Math.floor(Math.random() * pool.length)];
-                
-                if(el.innerText === "🌷") {
-                    el.style.fontSize = "16px";
-                }
-
-                // --- EKRANIN KƏNARLARINDAN BAŞLAMA MƏNTİQİ ---
-                // Elementlərin gələcəyi təsadüfi xarici koordinatları hesablayırıq
-                const side = Math.floor(Math.random() * 4); // 0: Yuxarı, 1: Sağ, 2: Aşağı, 3: Sol
-                let startX, startY;
-                const offset = 200; // Ekrandan tam kənarda yaranmaları üçün
-
-                if (side === 0) { // Yuxarıdan
-                    startX = Math.random() * window.innerWidth - (window.innerWidth / 2);
-                    startY = -offset;
-                } else if (side === 1) { // Sağdan
-                    startX = window.innerWidth / 2 + offset;
-                    startY = Math.random() * window.innerHeight - (window.innerHeight / 2);
-                } else if (side === 2) { // Aşağıdan
-                    startX = Math.random() * window.innerWidth - (window.innerWidth / 2);
-                    startY = window.innerHeight / 2 + offset;
-                } else { // Soldan
-                    startX = -window.innerWidth / 2 - offset;
-                    startY = Math.random() * window.innerHeight - (window.innerHeight / 2);
-                }
-
-                // Stil və animasiya dəyişənlərini CSS-ə ötürürük
-                el.style.setProperty('--start-x', startX + 'px');
-                el.style.setProperty('--start-y', startY + 'px');
-                el.style.setProperty('--target-x', targetPos.x + 'px');
-                el.style.setProperty('--target-y', targetPos.y + 'px');
-                
-                // Fırlanma effektləri
-                el.style.setProperty('--start-rot', (Math.random() * 360) + 'deg');
-                el.style.setProperty('--final-rot', (Math.random() * 20 - 10) + 'deg');
-                
-                // Şəffaflıq xüsusiyyəti
-                el.style.setProperty('--max-op', (0.75 + Math.random() * 0.25));
-
-                heartContainer.appendChild(el);
+                createCyclicElement(i, totalPoints);
             }
+        }
+
+        function createCyclicElement(index, totalPoints) {
+            const angle = (index / totalPoints) * 2 * Math.PI;
+            const targetPos = getHeartPoint(angle);
+
+            const containerEl = document.createElement('div');
+            containerEl.classList.add('floating-element', 'animate-item');
+
+            // Kontent seçimi (%40 Mədinə, %30 Səni sevirəm, %20 Tülpan Şəkli, %10 Ürək Şəkli)
+            const rand = Math.random();
+            if (rand < 0.40) {
+                containerEl.innerText = "Mədinə";
+                containerEl.classList.add('floating-text-style');
+            } else if (rand < 0.70) {
+                containerEl.innerText = "Səni sevirəm";
+                containerEl.classList.add('floating-text-style');
+                containerEl.style.color = "#ff4d6d"; // Bir az rəng fərqliliyi
+            } else if (rand < 0.90) {
+                const img = document.createElement('img');
+                img.src = realTulipImg;
+                img.classList.add('floating-img-style');
+                containerEl.appendChild(img);
+            } else {
+                const img = document.createElement('img');
+                img.src = realHeartImg;
+                img.classList.add('floating-img-style');
+                img.style.width = "26px"; // Balans üçün
+                containerEl.appendChild(img);
+            }
+
+            // Kənarlardan gəlmə koordinatları
+            const side = Math.floor(Math.random() * 4);
+            let startX, startY;
+            const offset = 250;
+
+            if (side === 0) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = -offset; }
+            else if (side === 1) { startX = window.innerWidth / 2 + offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
+            else if (side === 2) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = window.innerHeight / 2 + offset; }
+            else { startX = -window.innerWidth / 2 - offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
+
+            // Animasiya vaxtları (Mahnının tempinə uyğun axıcı və davamlı etmək üçün)
+            const duration = 7 + Math.random() * 4; // 7-11 saniyə arası çəkir tam dövr
+            const delay = Math.random() * 5; // İlk başda xaotik gəlmələri üçün fərqli gecikmələr
+
+            containerEl.style.setProperty('--start-x', startX + 'px');
+            containerEl.style.setProperty('--start-y', startY + 'px');
+            containerEl.style.setProperty('--target-x', targetPos.x + 'px');
+            containerEl.style.setProperty('--target-y', targetPos.y + 'px');
+            
+            containerEl.style.setProperty('--start-rot', (Math.random() * 360) + 'deg');
+            containerEl.style.setProperty('--final-rot', (Math.random() * 20 - 10) + 'deg');
+            containerEl.style.setProperty('--jitter-x', (Math.random() * 10 - 5) + 'px');
+            containerEl.style.setProperty('--jitter-y', (Math.random() * 10 - 5) + 'px');
+            
+            containerEl.style.setProperty('--max-op', (0.8 + Math.random() * 0.2));
+            containerEl.style.setProperty('--dur', duration + 's');
+            containerEl.style.setProperty('--delay', delay + 's');
+
+            heartContainer.appendChild(containerEl);
+
+            // Element öz dövrünü (animasiyasını) bitirəndə onu tamamilə silirik 
+            // və yerinə dərhal eyni nöqtə üçün təzəsini yaradırıq (Sonsuz Əvəzləmə Dövrü)
+            setTimeout(() => {
+                containerEl.remove();
+                createCyclicElement(index, totalPoints);
+            }, (duration + delay) * 1000);
         }
     </script>
 </body>
