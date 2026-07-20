@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sənin Üçün 🌷✨</title>
-    <!-- Gözəl və estetik əl yazısı şrifti (Google Fonts) -->
+    <!-- Gözəl əl yazısı şrifti (Google Fonts) -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -18,7 +18,8 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #ffafbd, #ffc3a0);
+            /* Premium tünd neon qara gradient arxa fon */
+            background: linear-gradient(-45deg, #0b090a, #161a1d, #0b090a, #200107);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             font-family: 'Montserrat', sans-serif;
@@ -35,19 +36,21 @@
         /* Sual Paneli */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(22, 26, 29, 0.75);
+            backdrop-filter: blur(15px);
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.25);
+            box-shadow: 0 20px 50px rgba(255, 77, 109, 0.15);
             z-index: 10;
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            transition: all 0.5s ease;
         }
 
         h2 {
             color: #ff4d6d;
             margin-bottom: 30px;
             font-size: 26px;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
         }
 
         .buttons {
@@ -68,18 +71,20 @@
             cursor: pointer;
             font-weight: bold;
             transition: transform 0.1s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         #yesBtn {
             background: linear-gradient(45deg, #ff4d6d, #ff758f);
             color: white;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
 
         #noBtn {
-            background-color: #6c757d;
-            color: white;
+            background-color: #343a40;
+            color: #e5e5e5;
             position: absolute;
+            border: 1px solid #4f5d73;
         }
 
         /* Animasiya Ekranı */
@@ -115,22 +120,23 @@
             align-items: center;
         }
 
-        /* Xüsusi Gözəl Yazı Şrifti */
+        /* Qara fonda bərq vuran Neon Əl Yazısı Stili */
         .floating-text-style {
             font-family: 'Caveat', cursive;
-            font-size: 24px; /* Şrift dəyişdiyi üçün ölçüsü böyüdüldü, çox gözəl qalın görünür */
+            font-size: 26px;
             font-weight: 700;
-            color: #d90429;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            color: #ff4d6d;
+            /* Neon parlama effekti */
+            text-shadow: 0 0 8px rgba(255, 77, 109, 0.8), 0 0 20px rgba(255, 77, 109, 0.4);
             white-space: nowrap;
         }
 
-        /* Real Şəkillərin Stili */
-        .floating-img-style {
-            width: 32px;
-            height: 32px;
+        /* Real Gözəl SVG Şəkillərin Stili */
+        .floating-svg-style {
+            width: 35px;
+            height: 35px;
             object-fit: contain;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.6));
         }
 
         /* Sonsuz Dövr Edən Giriş və Çıxış Animasiyası */
@@ -149,19 +155,18 @@
             20% {
                 opacity: 1;
             }
-            /* Mərkəzdə birləşib ürəyi yaradırlar və bir az rəqs edirlər */
+            /* Mərkəzdə birləşib ritmik yellənirlər */
             45%, 75% {
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: var(--max-op);
                 transform: scale(1) rotate(var(--final-rot)) translate(var(--jitter-x), var(--jitter-y));
             }
-            /* Yox olurlar ki, arxadan gələn yeniləri ilə əvəz olunsunlar */
             100% {
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: 0;
-                transform: scale(0.7) rotate(calc(var(--final-rot) * 1.5));
+                transform: scale(0.5) rotate(calc(var(--final-rot) * 1.8));
             }
         }
     </style>
@@ -193,9 +198,9 @@
         const heartContainer = document.getElementById('heartContainer');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Real Şəkillərin Linkləri (Şəffaf PNG formatında premium vizuallar)
-        const realTulipImg = "https://i.imgur.com/vHq8S7g.png"; // Real Qırmızı/Çəhrayı Tülpan
-        const realHeartImg = "https://i.imgur.com/S8p3bY6.png"; // Real Parlaq Ürək
+        // Heç bir internet linkindən asılı olmayan, birbaşa kodun daxilinə yerləşdirilmiş vektor tülpan və ürək (SVG Base64)
+        const safeTulipSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 40c-6 0-12-5-12-14 0-10 12-22 12-22s12 12 12 22c0 9-6 14-12 14z' fill='%23ff3a5c'/><path d='M32 40c-3 0-7-2-8-8 3-1 6-4 7-8 1 4 4 7 7 8-1 6-5 8-8 8z' fill='%23ff5d7c'/><path d='M32 38v22' stroke='%234caf50' stroke-width='3' stroke-linecap='round'/><path d='M32 48c-4 1-7 4-8 8 3-1 7-1 8-8z' fill='%234caf50'/></svg>";
+        const safeHeartSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 56.5L10.5 33.1C6.2 28.4 6.2 20.8 11 16.2c4.5-4.3 11.6-4 15.8.8L32 22.8l5.2-5.8c4.2-4.8 11.3-5.1 15.8-.8 4.8 4.6 4.8 12.2.5 16.9L32 56.5z' fill='%23e63946'/></svg>";
 
         function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 140) - (window.innerWidth / 2 - 100);
@@ -210,15 +215,12 @@
             setTimeout(() => {
                 quizBox.style.display = 'none';
                 loveScreen.style.display = 'block';
-                
-                // Elementləri dalğalı və daimi olaraq yaratmağa başlayırıq
                 startInfiniteHeartCycle();
             }, 400);
             
             bgMusic.play().catch(e => console.log("Musiqi xətası:", e));
         });
 
-        // Riyazi Ürək Koordinat Formulu
         function getHeartPoint(t) {
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
@@ -228,11 +230,8 @@
             };
         }
 
-        // Daimi dövriyyəni təmin edən idarəetmə funksiyası
         function startInfiniteHeartCycle() {
-            const totalPoints = 120; // Ürəyi təşkil edən nöqtə sayı
-            
-            // Hər nöqtə üçün elementi yaradırıq
+            const totalPoints = 120;
             for (let i = 0; i < totalPoints; i++) {
                 createCyclicElement(i, totalPoints);
             }
@@ -245,7 +244,6 @@
             const containerEl = document.createElement('div');
             containerEl.classList.add('floating-element', 'animate-item');
 
-            // Kontent seçimi (%40 Mədinə, %30 Səni sevirəm, %20 Tülpan Şəkli, %10 Ürək Şəkli)
             const rand = Math.random();
             if (rand < 0.40) {
                 containerEl.innerText = "Mədinə";
@@ -253,21 +251,20 @@
             } else if (rand < 0.70) {
                 containerEl.innerText = "Səni sevirəm";
                 containerEl.classList.add('floating-text-style');
-                containerEl.style.color = "#ff4d6d"; // Bir az rəng fərqliliyi
+                containerEl.style.color = "#ff758f"; 
             } else if (rand < 0.90) {
                 const img = document.createElement('img');
-                img.src = realTulipImg;
-                img.classList.add('floating-img-style');
+                img.src = safeTulipSvg;
+                img.classList.add('floating-svg-style');
                 containerEl.appendChild(img);
             } else {
                 const img = document.createElement('img');
-                img.src = realHeartImg;
-                img.classList.add('floating-img-style');
-                img.style.width = "26px"; // Balans üçün
+                img.src = safeHeartSvg;
+                img.classList.add('floating-svg-style');
+                img.style.width = "28px";
                 containerEl.appendChild(img);
             }
 
-            // Kənarlardan gəlmə koordinatları
             const side = Math.floor(Math.random() * 4);
             let startX, startY;
             const offset = 250;
@@ -277,9 +274,8 @@
             else if (side === 2) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = window.innerHeight / 2 + offset; }
             else { startX = -window.innerWidth / 2 - offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
 
-            // Animasiya vaxtları (Mahnının tempinə uyğun axıcı və davamlı etmək üçün)
-            const duration = 7 + Math.random() * 4; // 7-11 saniyə arası çəkir tam dövr
-            const delay = Math.random() * 5; // İlk başda xaotik gəlmələri üçün fərqli gecikmələr
+            const duration = 6.5 + Math.random() * 3.5; 
+            const delay = Math.random() * 4.5; 
 
             containerEl.style.setProperty('--start-x', startX + 'px');
             containerEl.style.setProperty('--start-y', startY + 'px');
@@ -287,18 +283,16 @@
             containerEl.style.setProperty('--target-y', targetPos.y + 'px');
             
             containerEl.style.setProperty('--start-rot', (Math.random() * 360) + 'deg');
-            containerEl.style.setProperty('--final-rot', (Math.random() * 20 - 10) + 'deg');
-            containerEl.style.setProperty('--jitter-x', (Math.random() * 10 - 5) + 'px');
-            containerEl.style.setProperty('--jitter-y', (Math.random() * 10 - 5) + 'px');
+            containerEl.style.setProperty('--final-rot', (Math.random() * 24 - 12) + 'deg');
+            containerEl.style.setProperty('--jitter-x', (Math.random() * 12 - 6) + 'px');
+            containerEl.style.setProperty('--jitter-y', (Math.random() * 12 - 6) + 'px');
             
-            containerEl.style.setProperty('--max-op', (0.8 + Math.random() * 0.2));
+            containerEl.style.setProperty('--max-op', (0.85 + Math.random() * 0.15));
             containerEl.style.setProperty('--dur', duration + 's');
             containerEl.style.setProperty('--delay', delay + 's');
 
             heartContainer.appendChild(containerEl);
 
-            // Element öz dövrünü (animasiyasını) bitirəndə onu tamamilə silirik 
-            // və yerinə dərhal eyni nöqtə üçün təzəsini yaradırıq (Sonsuz Əvəzləmə Dövrü)
             setTimeout(() => {
                 containerEl.remove();
                 createCyclicElement(index, totalPoints);
