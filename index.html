@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sürpriz v3 🌷</title>
+    <title>Sürpriz v4 🌷✨</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* İlk sual ekranı üçün daha canlı gradient fon */
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
@@ -27,7 +26,7 @@
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px); /* Müasir şüşə effekti */
+            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
@@ -74,7 +73,7 @@
             position: absolute;
         }
 
-        /* Animasiya Ekranı - Daha Rəngli və Maraqlı Gradient */
+        /* Animasiya Ekranı */
         .celebration {
             position: fixed;
             top: 0;
@@ -97,7 +96,7 @@
             background-color: #ff4d6d;
             transform: translate(-50%, -50%) rotate(-45deg);
             animation: heartbeat 2.5s infinite ease-in-out;
-            opacity: 0.12; /* Yazıların və tülpanların tam arxasında qalsın */
+            opacity: 0.12;
             z-index: 1;
             pointer-events: none;
         }
@@ -121,28 +120,29 @@
             100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
         }
 
-        /* Uçan adlar, ürəklər və tülpanlar */
+        /* Uçan adlar, ürəklər, tülpanlar və ingiliscə yazılar */
         .floating-text {
             position: absolute;
-            font-size: 14px;
+            font-size: 13px; /* Yazıların çox böyük olmaması üçün */
             font-weight: 600;
             color: #ff3366;
             pointer-events: none;
             z-index: 2;
             animation: elegantFloat var(--duration) linear infinite;
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.6);
+            white-space: nowrap;
         }
 
-        /* Gizli Mira Yazısının Stili (Fon rənginə uyğunlaşdırıldı ki, gizli qalsın) */
+        /* Gizli Mira Yazısının Stili */
         .secret-name {
-            color: #ffb3bc !important; /* Bu fonda çətin seçilən xüsusi çəhrayı tonu */
+            color: #ffb3bc !important;
             font-size: 11px !important;
             opacity: 0.35 !important;
             font-weight: bold;
             text-shadow: none !important;
         }
 
-        /* Hər tərəfə dağılan axıcı hərəkət animasiyası */
+        /* Hər tərəfə dağılan hərəkət animasiyası */
         @keyframes elegantFloat {
             0% {
                 top: var(--start-y);
@@ -185,7 +185,6 @@
         const quizBox = document.getElementById('quizBox');
         const loveScreen = document.getElementById('loveScreen');
 
-        // "Yox" düyməsinin qaçma mexanizmi
         function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 140) - (window.innerWidth / 2 - 100);
             const y = Math.random() * (window.innerHeight - 90) - (window.innerHeight / 2 - 40);
@@ -195,7 +194,6 @@
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
-        // "Hə" düyməsi basılanda fona keçid
         yesBtn.addEventListener('click', () => {
             quizBox.style.display = 'none';
             loveScreen.style.display = 'block';
@@ -203,9 +201,9 @@
         });
 
         function startEffects() {
-            const totalElements = 150; // Element sıxlığı artırıldı
+            const totalElements = 150; 
             
-            // Ekranda eyni anda hərəkət edəcək 3 ədəd gizli "Mira" növbəsi
+            // Ekranda eyni anda hərəkət edəcək 3 ədəd gizli "Mira"
             const secretIndices = [];
             while(secretIndices.length < 3) {
                 let r = Math.floor(Math.random() * totalElements);
@@ -227,20 +225,23 @@
                 el.innerText = "Mira";
                 el.classList.add('secret-name');
             } else {
-                // Ehtimal paylanması: %45 Mədinə, %35 Tülpan (🌷), %20 Ürək (❤️)
+                // Faiz paylanması: %35 Mədinə, %25 I love you, %25 Tülpan, %15 Ürək
                 const rand = Math.random();
-                if (rand < 0.45) {
+                if (rand < 0.35) {
                     el.innerText = "Mədinə";
-                } else if (rand < 0.80) {
+                } else if (rand < 0.60) {
+                    el.innerText = "I love you";
+                    el.style.fontStyle = "italic"; /* Bir az fərqlənsin */
+                } else if (rand < 0.85) {
                     el.innerText = "🌷";
-                    el.style.fontSize = "16px"; // Tülpanlar bir az daha şirin görünsün
+                    el.style.fontSize = "16px";
                 } else {
                     el.innerText = "❤️";
                 }
             }
 
-            // Ekranın hər tərəfindən çıxma trayektoriyası
-            const side = Math.floor(Math.random() * 3); // 0: Aşağı, 1: Sol, 2: Sağ
+            // Çıxış nöqtələri (Aşağı, Sol, Sağ)
+            const side = Math.floor(Math.random() * 3);
             let startX, startY, endX, endY;
 
             if (side === 0) {
@@ -260,7 +261,7 @@
                 endY = startY - (Math.random() * 60 + 20);
             }
 
-            const duration = 6 + Math.random() * 6; // 6-12 saniyəlik axıcı keçid
+            const duration = 6 + Math.random() * 6;
             const rotation = (Math.random() * 360 - 180) + 'deg';
             const maxOpacity = isSecret ? 0.35 : (0.7 + Math.random() * 0.3);
 
@@ -274,7 +275,6 @@
 
             loveScreen.appendChild(el);
 
-            // Sonsuz döngü üçün köhnəni silib yenisini fərqli trayektoriya ilə başladırıq
             setTimeout(() => {
                 el.remove();
                 createFloatingText(isSecret);
