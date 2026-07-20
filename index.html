@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sürpriz :)</title>
+    <title>Sürpriz v2 :)</title>
     <style>
         * {
             margin: 0;
@@ -79,68 +79,84 @@
             height: 100%;
             background: #fff0f3;
             display: none;
-            justify-content: center;
-            align-items: center;
             z-index: 5;
+            overflow: hidden;
         }
 
-        /* Mərkəzdəki Böyük Ürək */
-        .main-heart {
-            position: relative;
-            width: 150px;
-            height: 150px;
+        /* Arxa Plandakı Böyük Zərif Ürək */
+        .background-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
             background-color: #ff4d6d;
-            transform: rotate(-45deg);
-            animation: heartbeat 1.2s infinite;
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            transform: translate(-50%, -50%) rotate(-45deg);
+            animation: heartbeat 2s infinite ease-in-out;
+            opacity: 0.15; /* Yazıların arxasında gizli qalması üçün */
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .main-heart::before,
-        .main-heart::after {
+        .background-heart::before,
+        .background-heart::after {
             content: "";
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 300px;
+            height: 300px;
             background-color: #ff4d6d;
             border-radius: 50%;
         }
 
-        .main-heart::before { top: -75px; left: 0; }
-        .main-heart::after { left: 75px; top: 0; }
+        .background-heart::before { top: -150px; left: 0; }
+        .background-heart::after { left: 150px; top: 0; }
 
         @keyframes heartbeat {
-            0% { transform: rotate(-45deg) scale(1); }
-            20% { transform: rotate(-45deg) scale(1.1); }
-            40% { transform: rotate(-45deg) scale(1); }
-            60% { transform: rotate(-45deg) scale(1.15); }
-            100% { transform: rotate(-45deg) scale(1); }
+            0% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+            100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
         }
 
         /* Uçan adlar və ürəklər */
         .floating-text {
             position: absolute;
-            font-size: 13px; /* Yazılar çox böyük olmasın */
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             color: #ff758f;
             pointer-events: none;
-            animation: floatUp var(--duration) linear infinite;
-            opacity: 0.8;
+            z-index: 2; /* Ürəyin önündə olacaqlar */
+            animation: elegantFloat var(--duration) linear infinite;
+            text-shadow: 0 2px 5px rgba(255, 77, 109, 0.1);
         }
 
         /* Gizli Mira Yazısının Stili */
         .secret-name {
-            color: #ffccd5 !important; /* Arxa fona çox yaxın rəng */
-            font-size: 11px !important; /* Daha kiçik */
-            opacity: 0.25 !important; /* Çox şəffaf, diqqətlə baxanda görünür */
+            color: #ffccd5 !important; /* Arxa fona çox yaxın xüsusi rəng */
+            font-size: 11px !important;
+            opacity: 0.3 !important; /* Çox diqqətlə baxanda seçilir */
             font-weight: bold;
+            text-shadow: none !important;
         }
 
-        @keyframes floatUp {
+        /* Hər tərəfə dağılan axıcı animasiya */
+        @keyframes elegantFloat {
             0% {
-                transform: translateY(105vh) translateX(0) rotate(0deg);
+                top: var(--start-y);
+                left: var(--start-x);
+                opacity: 0;
+                transform: scale(0.6) rotate(0deg);
+            }
+            10% {
+                opacity: var(--max-opacity);
+            }
+            90% {
+                opacity: var(--max-opacity);
             }
             100% {
-                transform: translateY(-10vh) translateX(var(--drift)) rotate(360deg);
+                top: var(--end-y);
+                left: var(--end-x);
+                opacity: 0;
+                transform: scale(1.1) rotate(var(--rot));
             }
         }
     </style>
@@ -156,7 +172,7 @@
     </div>
 
     <div class="celebration" id="loveScreen">
-        <div class="main-heart"></div>
+        <div class="background-heart"></div>
     </div>
 
     <script>
@@ -167,32 +183,35 @@
 
         // "Yox" düyməsinin qaçma funksiyası
         function moveNoButton() {
-            // Ekranın ölçülərinə uyğun təsadüfi koordinatlar (kənarlardan bir az məsafə saxlayaraq)
             const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 100);
             const y = Math.random() * (window.innerHeight - 80) - (window.innerHeight / 2 - 40);
-            
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        // Həm klikləyəndə, həm də siçan üzərinə gələndə qaçsın
         noBtn.addEventListener('mouseenter', moveNoButton);
         noBtn.addEventListener('click', moveNoButton);
 
         // "Hə" düyməsi basılanda
         yesBtn.addEventListener('click', () => {
             quizBox.style.display = 'none';
-            loveScreen.style.display = 'flex';
+            loveScreen.style.display = 'block';
             startEffects();
         });
 
         function startEffects() {
-            const totalElements = 120; // Ekranda eyni anda olacaq ad sayı
-            const secretIndex = Math.floor(Math.random() * totalElements); // Mira-nın gizlənəcəyi təsadüfi növbə
+            const totalElements = 140; // Ekrandakı ümumi element sıxlığı
+            
+            // 3 ədəd fərqli növbədə çıxacaq Mira təyin edirik
+            const secretIndices = [];
+            while(secretIndices.length < 3) {
+                let r = Math.floor(Math.random() * totalElements);
+                if(!secretIndices.includes(r)) secretIndices.push(r);
+            }
 
             for (let i = 0; i < totalElements; i++) {
                 setTimeout(() => {
-                    createFloatingText(i === secretIndex);
-                }, i * 150); // Adların fərqli vaxtlarda çıxması üçün gecikmə
+                    createFloatingText(secretIndices.includes(i));
+                }, i * 80); // Ekran tez dolsun deyə çıxma intervalı qısaldıldı
             }
         }
 
@@ -204,25 +223,48 @@
                 el.innerText = "Mira";
                 el.classList.add('secret-name');
             } else {
-                // Təsadüfi olaraq ya "Mədinə" ya da kiçik ürək simvolu çıxsın
-                el.innerText = Math.random() > 0.3 ? "Mədinə" : "❤️";
+                el.innerText = Math.random() > 0.35 ? "Mədinə" : "❤️";
             }
 
-            // Təsadüfi mövqe və sürət parametrləri
-            const startX = Math.random() * 100; // Ekranın eni boyunca % ilə
-            const duration = 6 + Math.random() * 6; // 6-12 saniyə arası qalxma sürəti
-            const drift = (Math.random() * 200 - 100) + 'px'; // Yuxarı qalxarkən sağa-sola meyllənmə
+            // Ekranın HƏR TƏRƏFİNDƏN (Sol, Sağ, Aşağı) başlama məntiqi
+            const side = Math.floor(Math.random() * 3); // 0: Aşağı, 1: Sol, 2: Sağ
+            let startX, startY, endX, endY;
 
-            el.style.left = startX + 'vw';
+            if (side === 0) { // Aşağıdan çıxıb yuxarı dağılanlar
+                startX = Math.random() * 100;
+                startY = 105;
+                endX = startX + (Math.random() * 40 - 20);
+                endY = -10;
+            } else if (side === 1) { // Soldan çıxıb sağa/yuxarı dağılanlar
+                startX = -10;
+                startY = Math.random() * 80 + 20;
+                endX = Math.random() * 60 + 40;
+                endY = startY - (Math.random() * 60 + 20);
+            } else { // Sağdan çıxıb sola/yuxarı dağılanlar
+                startX = 110;
+                startY = Math.random() * 80 + 20;
+                endX = Math.random() * 60;
+                endY = startY - (Math.random() * 60 + 20);
+            }
+
+            const duration = 7 + Math.random() * 6; // 7-13 saniyə arası axıcı hərəkət
+            const rotation = (Math.random() * 360 - 180) + 'deg';
+            const maxOpacity = isSecret ? 0.3 : (0.6 + Math.random() * 0.4);
+
+            el.style.setProperty('--start-x', startX + 'vw');
+            el.style.setProperty('--start-y', startY + 'vh');
+            el.style.setProperty('--end-x', endX + 'vw');
+            el.style.setProperty('--end-y', endY + 'vh');
             el.style.setProperty('--duration', duration + 's');
-            el.style.setProperty('--drift', drift);
+            el.style.setProperty('--rot', rotation);
+            el.style.setProperty('--max-opacity', maxOpacity);
 
             loveScreen.appendChild(el);
 
-            // Animasiya bitəndə elementi silib yenisini yaradırıq ki, sonsuz davam etsin
+            // Element ekrandan itəndə onu silib yenisini fərqli koordinatla yaradırıq (Sonsuz dövr)
             setTimeout(() => {
                 el.remove();
-                createFloatingText(isSecret); // Əgər silinən Miradırsa, yenidən Mira yaransın
+                createFloatingText(isSecret);
             }, duration * 1000);
         }
     </script>
