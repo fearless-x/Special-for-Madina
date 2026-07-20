@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sənin Üçün 🌷✨</title>
-    <!-- Gözəl əl yazısı şrifti (Google Fonts) -->
+    <!-- Gözəl əl yazısı şrifti -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -18,7 +18,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* Premium tünd neon qara gradient arxa fon */
             background: linear-gradient(-45deg, #0b090a, #161a1d, #0b090a, #200107);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -43,7 +42,6 @@
             box-shadow: 0 20px 50px rgba(255, 77, 109, 0.15);
             z-index: 10;
             border: 1px solid rgba(255, 77, 109, 0.3);
-            transition: all 0.5s ease;
         }
 
         h2 {
@@ -70,14 +68,12 @@
             border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.1s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         #yesBtn {
             background: linear-gradient(45deg, #ff4d6d, #ff758f);
             color: white;
-            text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
 
         #noBtn {
@@ -96,18 +92,34 @@
             height: 100%;
             display: none;
             z-index: 5;
-            overflow: hidden;
         }
 
-        /* Ortadakı Ürəyin Konteyneri */
-        .heart-wrapper {
+        /* Mərkəzdəki Tam Qüsursuz Ürək Şablonu */
+        .heart-base {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 600px;
-            height: 600px;
+            width: 340px; /* Mobil ekranlar üçün tam ideal ölçü */
+            height: 320px;
             transform: translate(-50%, -50%);
             pointer-events: none;
+        }
+
+        /* Ürək formasını tam dəqiq göstərmək üçün arxa neon kölgə */
+        .heart-base::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 77, 109, 0.03);
+            clip-path: stroke(path("M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"));
+            filter: blur(20px);
+            animation: pulseBg 2s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
         }
 
         /* Elementlərin Ümumi Stili */
@@ -120,28 +132,27 @@
             align-items: center;
         }
 
-        /* Qara fonda bərq vuran Neon Əl Yazısı Stili */
+        /* Neon Əl Yazısı */
         .floating-text-style {
             font-family: 'Caveat', cursive;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             color: #ff4d6d;
-            /* Neon parlama effekti */
-            text-shadow: 0 0 8px rgba(255, 77, 109, 0.8), 0 0 20px rgba(255, 77, 109, 0.4);
+            text-shadow: 0 0 6px rgba(255, 77, 109, 0.9), 0 0 15px rgba(255, 77, 109, 0.3);
             white-space: nowrap;
         }
 
-        /* Real Gözəl SVG Şəkillərin Stili */
+        /* SVG Şəkillər */
         .floating-svg-style {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
-            filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.6));
+            filter: drop-shadow(0 0 6px rgba(255, 77, 109, 0.7));
         }
 
-        /* Sonsuz Dövr Edən Giriş və Çıxış Animasiyası */
+        /* Giriş, Ürəkdə Dayanma və Sonsuz Dövr Animasiyası */
         .animate-item {
-            animation: gatherAndCycle var(--dur) cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: gatherAndCycle var(--dur) cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
             animation-delay: var(--delay);
         }
 
@@ -150,13 +161,13 @@
                 top: var(--start-y);
                 left: var(--start-x);
                 opacity: 0;
-                transform: scale(0.3) rotate(var(--start-rot));
+                transform: scale(0.2) rotate(var(--start-rot));
             }
-            20% {
+            15% {
                 opacity: 1;
             }
-            /* Mərkəzdə birləşib ritmik yellənirlər */
-            45%, 75% {
+            /* Mərkəzdə qüsursuz ürək koordinatında sabit qalıb yüngül rəqs edirlər */
+            40%, 80% {
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: var(--max-op);
@@ -166,7 +177,7 @@
                 top: var(--target-y);
                 left: var(--target-x);
                 opacity: 0;
-                transform: scale(0.5) rotate(calc(var(--final-rot) * 1.8));
+                transform: scale(0.4) rotate(calc(var(--final-rot) * 1.5));
             }
         }
     </style>
@@ -182,10 +193,10 @@
     </div>
 
     <div class="celebration" id="loveScreen">
-        <div class="heart-wrapper" id="heartContainer"></div>
+        <!-- İdeal Simmetrik Ürək Konteyneri -->
+        <div class="heart-base" id="heartContainer"></div>
     </div>
 
-    <!-- Musiqi elementi -->
     <audio id="bgMusic" loop preload="auto">
         <source src="ssstik.io_1784557325154.mp3" type="audio/mpeg">
     </audio>
@@ -198,7 +209,6 @@
         const heartContainer = document.getElementById('heartContainer');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Heç bir internet linkindən asılı olmayan, birbaşa kodun daxilinə yerləşdirilmiş vektor tülpan və ürək (SVG Base64)
         const safeTulipSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 40c-6 0-12-5-12-14 0-10 12-22 12-22s12 12 12 22c0 9-6 14-12 14z' fill='%23ff3a5c'/><path d='M32 40c-3 0-7-2-8-8 3-1 6-4 7-8 1 4 4 7 7 8-1 6-5 8-8 8z' fill='%23ff5d7c'/><path d='M32 38v22' stroke='%234caf50' stroke-width='3' stroke-linecap='round'/><path d='M32 48c-4 1-7 4-8 8 3-1 7-1 8-8z' fill='%234caf50'/></svg>";
         const safeHeartSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 56.5L10.5 33.1C6.2 28.4 6.2 20.8 11 16.2c4.5-4.3 11.6-4 15.8.8L32 22.8l5.2-5.8c4.2-4.8 11.3-5.1 15.8-.8 4.8 4.6 4.8 12.2.5 16.9L32 56.5z' fill='%23e63946'/></svg>";
 
@@ -217,29 +227,36 @@
                 loveScreen.style.display = 'block';
                 startInfiniteHeartCycle();
             }, 400);
-            
-            bgMusic.play().catch(e => console.log("Musiqi xətası:", e));
+            bgMusic.play().catch(e => console.log(e));
         });
 
-        function getHeartPoint(t) {
+        // Yeni Qüsursuz Həndəsi Ürək Alqoritmi (Mərkəzi nöqtələr)
+        function getPerfectHeartPoint(t, width, height) {
+            // t parametrini 0-dan 2*PI-ə qədər götürürük
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            
+            // 340x320 ölçülü konteynerin tam daxili simmetrik nöqtələri
             return {
-                x: 300 + x * 13,
-                y: 270 - y * 13 
+                x: (width / 2) + x * (width / 38),
+                y: (height / 2.3) - y * (height / 35)
             };
         }
 
         function startInfiniteHeartCycle() {
-            const totalPoints = 120;
+            const totalPoints = 100; // Tam ideal sıxlıq
             for (let i = 0; i < totalPoints; i++) {
                 createCyclicElement(i, totalPoints);
             }
         }
 
         function createCyclicElement(index, totalPoints) {
+            // Ürəyin tam ölçüləri
+            const w = 340;
+            const h = 320;
+            
             const angle = (index / totalPoints) * 2 * Math.PI;
-            const targetPos = getHeartPoint(angle);
+            const targetPos = getPerfectHeartPoint(angle, w, h);
 
             const containerEl = document.createElement('div');
             containerEl.classList.add('floating-element', 'animate-item');
@@ -261,31 +278,34 @@
                 const img = document.createElement('img');
                 img.src = safeHeartSvg;
                 img.classList.add('floating-svg-style');
-                img.style.width = "28px";
+                img.style.width = "24px";
                 containerEl.appendChild(img);
             }
 
+            // Ekranın kənarlarından gəlmə məsafəsi
             const side = Math.floor(Math.random() * 4);
             let startX, startY;
-            const offset = 250;
+            const offset = 300;
 
-            if (side === 0) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = -offset; }
-            else if (side === 1) { startX = window.innerWidth / 2 + offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
-            else if (side === 2) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = window.innerHeight / 2 + offset; }
-            else { startX = -window.innerWidth / 2 - offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
+            // Ekranın mərkəzinə nəzərən kənar başlanğıclar
+            if (side === 0) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = -(window.innerHeight/2) - offset; }
+            else if (side === 1) { startX = (window.innerWidth / 2) + offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
+            else if (side === 2) { startX = Math.random() * window.innerWidth - (window.innerWidth / 2); startY = (window.innerHeight/2) + offset; }
+            else { startX = -(window.innerWidth / 2) - offset; startY = Math.random() * window.innerHeight - (window.innerHeight / 2); }
 
-            const duration = 6.5 + Math.random() * 3.5; 
-            const delay = Math.random() * 4.5; 
+            const duration = 6 + Math.random() * 3; 
+            const delay = Math.random() * 4; 
 
-            containerEl.style.setProperty('--start-x', startX + 'px');
-            containerEl.style.setProperty('--start-y', startY + 'px');
+            // CSS-ə ötürülən piksellər konteyner daxili koordinat sisteminə uyğunlaşdırılır
+            containerEl.style.setProperty('--start-x', (startX + w/2) + 'px');
+            containerEl.style.setProperty('--start-y', (startY + h/2) + 'px');
             containerEl.style.setProperty('--target-x', targetPos.x + 'px');
             containerEl.style.setProperty('--target-y', targetPos.y + 'px');
             
             containerEl.style.setProperty('--start-rot', (Math.random() * 360) + 'deg');
-            containerEl.style.setProperty('--final-rot', (Math.random() * 24 - 12) + 'deg');
-            containerEl.style.setProperty('--jitter-x', (Math.random() * 12 - 6) + 'px');
-            containerEl.style.setProperty('--jitter-y', (Math.random() * 12 - 6) + 'px');
+            containerEl.style.setProperty('--final-rot', (Math.random() * 16 - 8) + 'deg');
+            containerEl.style.setProperty('--jitter-x', (Math.random() * 8 - 4) + 'px');
+            containerEl.style.setProperty('--jitter-y', (Math.random() * 8 - 4) + 'px');
             
             containerEl.style.setProperty('--max-op', (0.85 + Math.random() * 0.15));
             containerEl.style.setProperty('--dur', duration + 's');
@@ -293,6 +313,7 @@
 
             heartContainer.appendChild(containerEl);
 
+            // Sonsuz dövrü yeniləmə
             setTimeout(() => {
                 containerEl.remove();
                 createCyclicElement(index, totalPoints);
